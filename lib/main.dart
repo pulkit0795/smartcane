@@ -1,37 +1,24 @@
-//dependencies:
-//flutter:
-//sdk: flutter
-//flutter_tts: ^1.2.6
-//translator: ^0.1.5
-//
-//
-//firebase_core: ^0.4.0+9
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_stack/image_stack.dart';
 import 'dart:io';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:ocr_app/settings.dart';
-
 import 'package:translator/translator.dart';
 import 'package:image/image.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:pimp_my_button/pimp_my_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ocr_app/settings.dart';
-import 'package:fab_circular_menu/fab_circular_menu.dart';
-
 import 'widgets/side_nav.dart';
-import 'package:path/path.dart' as Path;
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:image_stack/image_stack.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-int num = 0;
+import 'package:ocr_app/settings.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:path/path.dart' as Path;
 
 List<CameraDescription> cameras;
 
