@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "588955979223",
+    "project_id": "ocr-prac-f1507",
+    "storage_bucket": "ocr-prac-f1507.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:588955979223:android:a19051ce584a68ae410f92",
+        "android_client_info": {
+          "package_name": "com.webdevwithus.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "588955979223-99046rhuu94m3cn74k12vkncq0iji6jg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqtuPm3AkOUsVaRjFecMWIpEem8TQqpBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "588955979223-99046rhuu94m3cn74k12vkncq0iji6jg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
