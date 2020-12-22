@@ -88,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future readText() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool transNeeded = prefs.getBool('transNeeded');
-    double speechRate = prefs.getDouble('speed') / 100;
+    bool transNeeded = prefs.getBool('transNeeded') ?? false;
+    double speechRate = (prefs.getDouble('speed') ?? 80) / 100;
     String vAccent;
     String dLang;
     String trLang;
@@ -120,6 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 'Japanese':
         dLang = "hi-IN"; //todo : add code
         break;
+      default:
+        dLang = "hi-IN";
+        break;
     }
     switch (prefs.getString('translatedLang')) {
       case 'Indian':
@@ -133,6 +136,9 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case 'Japanese':
         trLang = "hi"; //todo : add code
+        break;
+      default:
+        trLang = "hi-IN";
         break;
     }
 
@@ -175,8 +181,13 @@ class _MyHomePageState extends State<MyHomePage> {
     var p = await flutterTts.getVoices;
     print(p);
     if (transNeeded) {
-      Translate(temp, trLang);
-      temp = trans;
+      await translator.translate(temp, to: trLang).then((output) {
+        setState(() {
+          temp = output.toString();
+        });
+      });
+      // Translate(temp, trLang);
+      // temp = trans;
     }
     await flutterTts.setLanguage(dLang);
 
