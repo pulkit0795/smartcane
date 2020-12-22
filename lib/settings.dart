@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 double speed = 80;
 String voiceAccent;
@@ -69,6 +71,7 @@ class _SettingsState extends State<Settings> {
         ),
         centerTitle: true,
       ),
+      backgroundColor: HexColor('#2f3649'),
       body: Column(
         children: <Widget>[
           SizedBox(
@@ -79,24 +82,37 @@ class _SettingsState extends State<Settings> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: Colors.white
             ),
           ),
           SizedBox(
             height: 10,
           ),
-          Slider(
-            value: speed,
-            min: 0,
-            max: 100,
-            divisions: 20,
-            label: speed.toInt().toString(),
-            onChanged: (double value) async {
-              // SharedPreferences prefs = await SharedPreferences.getInstance();
-              setState(() {
-                speed = value;
-                // prefs.setDouble('speed', speed);
-              });
-            },
+          SliderTheme(
+            child: Slider(
+              value: speed,
+              min: 0,
+              max: 100,
+              divisions: 20,
+              label: speed.toInt().toString(),
+              onChanged: (double value) async {
+                // SharedPreferences prefs = await SharedPreferences.getInstance();
+                setState(() {
+                  speed = value;
+                  // prefs.setDouble('speed', speed);
+                });
+              },
+            ),
+            data: SliderTheme.of(context).copyWith(
+                valueIndicatorColor: HexColor('#ffffff'),
+                inactiveTrackColor: HexColor('#adefd1ff'),
+              activeTrackColor: HexColor('#ffffff'),
+              thumbColor: HexColor('#ffffff'),
+              overlayColor: HexColor('#adefd1ff'),
+                valueIndicatorTextStyle: TextStyle(
+                    color: Colors.black, letterSpacing: 2.0)
+
+            ),
           ),
           SizedBox(
             height: 10,
@@ -109,35 +125,44 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                    color: Colors.white
                 ),
               ),
               SizedBox(
                 width: 10,
               ),
-              DropdownButton<String>(
-                value: voiceAccent,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 30,
-                elevation: 16,
-                style: TextStyle(color: Colors.blueAccent),
-                underline: Container(
-                  height: 2,
-                  color: Colors.blueAccent,
+              Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: HexColor('#2f3649'),
                 ),
-                onChanged: (String newValue) async {
-                  // SharedPreferences prefs = await SharedPreferences.getInstance();
-                  setState(() {
-                    voiceAccent = newValue;
-                    // prefs.setString('voiceAccent', voiceAccent);
-                  });
-                },
-                items: <String>['Indian', 'American', 'British', 'Japanese']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                child:DropdownButton<String>(
+                  value: voiceAccent,
+                  icon: Icon(
+                      Icons.arrow_downward,
+                    color: HexColor('#adefd1ff'),
+                  ),
+                  iconSize: 30,
+                  elevation: 16,
+                  style: TextStyle(color: HexColor('#adefd1ff')),
+                  underline: Container(
+                    height: 2,
+                    color: HexColor('#adefd1ff'),
+                  ),
+                  onChanged: (String newValue) async {
+                    // SharedPreferences prefs = await SharedPreferences.getInstance();
+                    setState(() {
+                      voiceAccent = newValue;
+                      // prefs.setString('voiceAccent', voiceAccent);
+                    });
+                  },
+                  items: <String>['Indian', 'American', 'British', 'Japanese']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
@@ -152,35 +177,44 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                    color: Colors.white
                 ),
               ),
               SizedBox(
                 width: 10,
               ),
-              DropdownButton<String>(
-                value: defaultLang,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 30,
-                elevation: 16,
-                style: TextStyle(color: Colors.blueAccent),
-                underline: Container(
-                  height: 2,
-                  color: Colors.blueAccent,
+              Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: HexColor('#2f3649'),
                 ),
-                onChanged: (String newValue) async {
-                  // SharedPreferences prefs = await SharedPreferences.getInstance();
-                  setState(() {
-                    defaultLang = newValue;
-                    // prefs.setString('defaultLang', defaultLang);
-                  });
-                },
-                items: <String>['English', 'Hindi', 'Russian', 'Japanese']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                child: DropdownButton<String>(
+                  value: defaultLang,
+                  icon: Icon(
+                    Icons.arrow_downward,
+                      color: HexColor('#adefd1ff'),
+                  ),
+                  iconSize: 30,
+                  elevation: 16,
+                  style: TextStyle(color: HexColor('#adefd1ff')),
+                  underline: Container(
+                    height: 2,
+                    color: HexColor('#adefd1ff'),
+                  ),
+                  onChanged: (String newValue) async {
+                    // SharedPreferences prefs = await SharedPreferences.getInstance();
+                    setState(() {
+                      defaultLang = newValue;
+                      // prefs.setString('defaultLang', defaultLang);
+                    });
+                  },
+                  items: <String>['English', 'Hindi', 'Russian', 'Japanese']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
@@ -192,6 +226,7 @@ class _SettingsState extends State<Settings> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+                color: Colors.white
             ),
           ),
           SizedBox(
@@ -200,30 +235,40 @@ class _SettingsState extends State<Settings> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Checkbox(
-                  value: transNeeded,
-                  activeColor: Colors.blueAccent,
-                  onChanged: (bool newValue) async {
-                    // SharedPreferences prefs = await SharedPreferences.getInstance();
-                    setState(() {
-                      transNeeded = newValue;
-                      // prefs.setBool('transNeeded', transNeeded);
-                    });
-                    Text('Activate Translation');
-                  }),
+              Theme(
+                data: ThemeData(unselectedWidgetColor: HexColor('#ffffff')),
+                child: Checkbox(
+                    value: transNeeded,
+                    activeColor: HexColor('#adefd1ff'),
+                    onChanged: (bool newValue) async {
+                      // SharedPreferences prefs = await SharedPreferences.getInstance();
+                      setState(() {
+                        transNeeded = newValue;
+                        // prefs.setBool('transNeeded', transNeeded);
+                      });
+                      Text('Activate Translation');
+                    }),
+              ),
               IgnorePointer(
                 ignoring: !transNeeded,
+                child:Theme(
+                data: Theme.of(context).copyWith(
+                  canvasColor: HexColor('#2f3649'),
+                ),
+
                 child: DropdownButton<String>(
                   value: translatedLang,
-                  icon: Icon(Icons.arrow_downward),
+                  icon: Icon(Icons.arrow_downward,
+                      color: transNeeded ? HexColor('#adefd1ff') : HexColor('#9a939e'),
+                  ),
                   iconSize: 30,
                   elevation: 16,
                   style: transNeeded
-                      ? TextStyle(color: Colors.blueAccent)
-                      : TextStyle(color: Colors.grey),
+                      ? TextStyle(color: HexColor('#efd1ff'))
+                      : TextStyle(color: HexColor('#9a939e')),
                   underline: Container(
                     height: 2,
-                    color: Colors.blueAccent,
+                    color: transNeeded ? HexColor('#adefd1ff') : HexColor('#9a939e'),
                   ),
                   onChanged: (String newValue) async {
                     // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -240,6 +285,7 @@ class _SettingsState extends State<Settings> {
                     );
                   }).toList(),
                 ),
+                ),
               ),
             ],
           ),
@@ -247,10 +293,13 @@ class _SettingsState extends State<Settings> {
             height: 50,
           ),
           RaisedButton(
-              color: Colors.blue,
+              color: HexColor('#adefd1ff'),
               child: Text(
                 'Save',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -260,6 +309,15 @@ class _SettingsState extends State<Settings> {
                   prefs.setString('voiceAccent', voiceAccent);
                   prefs.setBool('transNeeded', transNeeded);
                   prefs.setDouble('speed', speed);
+                  Fluttertoast.showToast(
+                  msg: "Settings Updated",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2,
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black54,
+                  fontSize: 16.0);
+                  Navigator.pop(context);
                 });
               })
         ],

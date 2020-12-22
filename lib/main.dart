@@ -75,15 +75,19 @@ class _MyHomePageState extends State<MyHomePage> {
   File pickedImage;
   bool isImageLoaded = false;
 
-  Future pickImage() async {
-    var tempStore = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future pickImage(bool cam) async {
+    var tempStore = cam
+        ? await ImagePicker.pickImage(source: ImageSource.camera)
+        : await ImagePicker.pickImage(source: ImageSource.gallery);
     print(tempStore);
 
     setState(() {
       pickedImage =
           tempStore; // picked image wali file ko rotate krna h or fir picked img e hi save kradena h
-      isImageLoaded = true;
     });
+    if (pickedImage != null) {
+      isImageLoaded = true;
+    }
   }
 
   Future readText() async {
@@ -98,47 +102,44 @@ class _MyHomePageState extends State<MyHomePage> {
         vAccent = 'hi-in-x-hia-local';
         break;
       case 'American':
-        vAccent = 'hi-in-x-hia-local'; //todo : add code
+        vAccent = 'es-us-x-sfb-local'; //todo : add code
         break;
       case 'British':
-        vAccent = 'hi-in-x-hia-local'; //todo : add code
+        vAccent = 'en-gb-x-gbb-network';
         break;
       case 'Japanese':
-        vAccent = 'hi-in-x-hia-local'; //todo : add code
+        vAccent = 'ja-jp-x-jab-network';
         break;
     }
     switch (prefs.getString('defaultLang')) {
-      case 'Indian':
-        dLang = "hi-IN";
+      case 'English':
+        dLang = "en-GB";
         break;
       case 'Hindi':
-        dLang = "hi-IN"; //todo : add code
+        dLang = "hi-IN";
         break;
       case 'Russian':
-        dLang = "hi-IN"; //todo : add code
+        dLang = "ru";
         break;
       case 'Japanese':
-        dLang = "hi-IN"; //todo : add code
+        dLang = "ja";
         break;
       default:
-        dLang = "hi-IN";
+        dLang = "en-GB";
         break;
     }
     switch (prefs.getString('translatedLang')) {
-      case 'Indian':
-        trLang = "hi-IN"; //todo : check code
+      case 'English':
+        trLang = "en-GB";
         break;
       case 'Hindi':
         trLang = "hi";
         break;
       case 'Russian':
-        trLang = "hi"; //todo : add code
+        trLang = "ru";
         break;
       case 'Japanese':
-        trLang = "hi"; //todo : add code
-        break;
-      default:
-        trLang = "hi-IN";
+        trLang = "ja";
         break;
     }
 
@@ -254,11 +255,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Translate(temp, String tLang) async {
+    print('translating...');
     await translator.translate(temp, to: tLang).then((output) {
       setState(() {
         trans = output.toString();
       });
     });
+    print('hello done');
   }
 
   RotateImg() {
@@ -366,19 +369,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 hoverColor: HexColor('#182035'),
                 splashColor: Colors.white70,
                 child: Text(
-                  'Pick an image',
+                  'Choose Image',
                   style: TextStyle(
                       fontSize: 15, letterSpacing: 2, color: Colors.white),
                 ),
                 onPressed: () {
                   print('heyyyyyyy');
-                  pickImage();
+                  pickImage(false);
                   // setState(() {
                   //   print('hey');
                   //   isImageLoaded = true;
                   //   pickedImage=File('/data/user/0/com.webdevwithus.ocr_app/cache/image_picker5960057178698883867.jpg');
                   // },
                   // );
+                },
+                onLongPress: () {
+                  pickImage(true);
                 },
               ),
               SizedBox(
@@ -422,8 +428,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM_LEFT,
                                     timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
+                                    backgroundColor: Colors.white,
+                                    textColor: Colors.black54,
                                     fontSize: 16.0);
                               },
                               elevation: 6,
