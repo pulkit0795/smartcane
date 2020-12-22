@@ -69,6 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int x = 0;
   String trans;
+  String audioFileName;
+  String temp = '';
   GoogleTranslator translator = GoogleTranslator();
   final FlutterTts flutterTts = FlutterTts();
 
@@ -102,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         vAccent = 'hi-in-x-hia-local';
         break;
       case 'American':
-        vAccent = 'es-us-x-sfb-local'; //todo : add code
+        vAccent = 'es-us-x-sfb-local';
         break;
       case 'British':
         vAccent = 'en-gb-x-gbb-network';
@@ -144,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     print('---------Reading the Text---------');
-    String temp = '';
+    // String temp = '';
     FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(pickedImage);
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     VisionText readText = await recognizeText.processImage(ourImage);
@@ -173,12 +175,6 @@ class _MyHomePageState extends State<MyHomePage> {
     temp = temp.replaceAll(
         '\n', ''); // removes newlines from temp - unnecessary pauses
 
-//    await translator.translate(temp,to:'hi').then((output) {
-//      setState(() {
-//        trans = output.toString();
-//      });
-//    } );
-
     var p = await flutterTts.getVoices;
     print(p);
     if (transNeeded) {
@@ -187,8 +183,6 @@ class _MyHomePageState extends State<MyHomePage> {
           temp = output.toString();
         });
       });
-      // Translate(temp, trLang);
-      // temp = trans;
     }
     await flutterTts.setLanguage(dLang);
 
@@ -205,53 +199,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   SaveFile() async {
-    print('---------Reading the Text---------');
-    String temp = '';
-    FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(pickedImage);
-    TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
-    VisionText readText = await recognizeText.processImage(ourImage);
-    int i = 0;
-
-    for (TextBlock block in readText.blocks) {
-      temp += '\n';
-
-//      temp+=block.text;
-//      temp+=' ';
-//      print(i.toString()+'\n');
-//      i++;
-
-//      print(block.text);
-      for (TextLine line in block.lines) {
-        for (TextElement word in line.elements) {
-          temp.trim();
-          temp += word.text;
-          temp += ' ';
-//            print(temp[temp.length]);
-
-          print(word.text);
-        }
-      }
-    }
-
-    temp = temp.replaceAll(
-        '\n', ''); // removes newlines from temp - unnecessary pauses
-
-//    await translator.translate(temp,to:'hi').then((output) {
-//      setState(() {
-//        trans = output.toString();
-//      });
-//    } );
-
-    await flutterTts.setLanguage("hi-IN");
-    var p = await flutterTts.getVoices;
-    print(p);
-//    await flutterTts.setVoice('hi-in-x-hid-network');
-//     await flutterTts.setVoice('hi-in-x-hia-local');
-    await flutterTts.setSpeechRate(0.8);
-    await flutterTts.synthesizeToFile(temp, '1staudio.mp4');
+    await flutterTts.synthesizeToFile(temp, audioFileName + '.mp4');
 
     File file = File(
-        '/storage/emulated/0/Android/data/com.webdevwithus.flutter_app/files/1staudio.mp4');
+        '/storage/emulated/0/Android/data/com.webdevwithus.flutter_app/files/' +
+                audioFileName ??
+            '1staudio' + '.mp4');
   }
 
   Translate(temp, String tLang) async {
@@ -271,6 +224,61 @@ class _MyHomePageState extends State<MyHomePage> {
       pickedImage.writeAsBytesSync(encodePng(thumbnail));
       x += 1;
     });
+  }
+
+  final myController = TextEditingController();
+
+  @override
+  void disposeText() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
+  _showDialog() async {
+    await showDialog<String>(
+      context: context,
+      child: new AlertDialog(
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextField(
+                controller: myController,
+                autofocus: true,
+                decoration: new InputDecoration(
+                    labelText: 'Enter File Name',
+                    hintText: 'The Alchemist\'s AudioBook'),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          new FlatButton(
+              child: const Text('DONE'),
+              onPressed: () {
+                audioFileName = myController.text;
+                myController.text = '';
+                // myController.dispose();
+                Navigator.pop(context);
+                SaveFile();
+                Fluttertoast.showToast(
+                    msg: "File Saved",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM_LEFT,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.black54,
+                    fontSize: 16.0);
+              })
+        ],
+      ),
+    );
   }
 
   @override
@@ -420,17 +428,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           particle: DemoParticle(),
                           pimpedWidgetBuilder: (context, controller) {
                             return RaisedButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                await _showDialog();
                                 controller.forward(from: 0.0);
-                                SaveFile();
-                                Fluttertoast.showToast(
-                                    msg: "File Saved",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM_LEFT,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.white,
-                                    textColor: Colors.black54,
-                                    fontSize: 16.0);
                               },
                               elevation: 6,
                               color: HexColor('#161D2F'),
@@ -497,5 +497,20 @@ class _MyHomePageState extends State<MyHomePage> {
 //          ]
 //      ),
     );
+  }
+}
+
+class _SystemPadding extends StatelessWidget {
+  final Widget child;
+
+  _SystemPadding({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    return new AnimatedContainer(
+        padding: mediaQuery.viewInsets,
+        duration: const Duration(milliseconds: 300),
+        child: child);
   }
 }
