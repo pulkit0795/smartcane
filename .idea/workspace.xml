@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="439f98e1-96a8-4839-a4fd-86252f03251f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="439f98e1-96a8-4839-a4fd-86252f03251f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,25 +79,33 @@
       <screen x="0" y="25" width="1440" height="818" />
     </state>
     <state x="483" y="137" key="Github.UntrackedFilesDialog/0.25.1440.818@0.25.1440.818" timestamp="1608496061515" />
-    <state width="1398" height="137" key="GridCell.Tab.0.bottom" timestamp="1608634330464">
-      <screen x="0" y="25" width="1440" height="818" />
+    <state width="1335" height="304" key="GridCell.Tab.0.bottom" timestamp="1608720451774">
+      <screen x="0" y="25" width="1440" height="819" />
     </state>
     <state width="1398" height="137" key="GridCell.Tab.0.bottom/0.25.1440.818@0.25.1440.818" timestamp="1608634330464" />
-    <state width="1398" height="137" key="GridCell.Tab.0.center" timestamp="1608634330463">
-      <screen x="0" y="25" width="1440" height="818" />
+    <state width="1335" height="304" key="GridCell.Tab.0.bottom/0.25.1440.819@0.25.1440.819" timestamp="1608720451774" />
+    <state width="1335" height="304" key="GridCell.Tab.0.center" timestamp="1608720451773">
+      <screen x="0" y="25" width="1440" height="819" />
     </state>
     <state width="1398" height="137" key="GridCell.Tab.0.center/0.25.1440.818@0.25.1440.818" timestamp="1608634330463" />
-    <state width="1398" height="137" key="GridCell.Tab.0.left" timestamp="1608634330463">
-      <screen x="0" y="25" width="1440" height="818" />
+    <state width="1335" height="304" key="GridCell.Tab.0.center/0.25.1440.819@0.25.1440.819" timestamp="1608720451773" />
+    <state width="1335" height="304" key="GridCell.Tab.0.left" timestamp="1608720451772">
+      <screen x="0" y="25" width="1440" height="819" />
     </state>
     <state width="1398" height="137" key="GridCell.Tab.0.left/0.25.1440.818@0.25.1440.818" timestamp="1608634330463" />
-    <state width="1398" height="137" key="GridCell.Tab.0.right" timestamp="1608634330463">
-      <screen x="0" y="25" width="1440" height="818" />
+    <state width="1335" height="304" key="GridCell.Tab.0.left/0.25.1440.819@0.25.1440.819" timestamp="1608720451772" />
+    <state width="1335" height="304" key="GridCell.Tab.0.right" timestamp="1608720451773">
+      <screen x="0" y="25" width="1440" height="819" />
     </state>
     <state width="1398" height="137" key="GridCell.Tab.0.right/0.25.1440.818@0.25.1440.818" timestamp="1608634330463" />
+    <state width="1335" height="304" key="GridCell.Tab.0.right/0.25.1440.819@0.25.1440.819" timestamp="1608720451773" />
     <state x="221" y="70" key="SettingsEditor" timestamp="1608495999973">
       <screen x="0" y="25" width="1440" height="818" />
     </state>
     <state x="221" y="70" key="SettingsEditor/0.25.1440.818@0.25.1440.818" timestamp="1608495999973" />
+    <state x="154" y="125" width="1177" height="619" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1608720441127">
+      <screen x="0" y="25" width="1440" height="819" />
+    </state>
+    <state x="154" y="125" width="1177" height="619" key="com.android.tools.idea.avdmanager.AvdListDialog/0.25.1440.819@0.25.1440.819" timestamp="1608720441127" />
   </component>
 </project>
