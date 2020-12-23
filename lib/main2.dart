@@ -3,6 +3,7 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ocr_app/settings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
@@ -69,6 +70,20 @@ class _FlutterVisionHomeState extends State<FlutterVisionHome> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: const Text("Image Labeller"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Settings()));
+              // Settings();
+              // do something
+            },
+          )
+        ],
         centerTitle: true,
         elevation: 0,
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:ocr_app/tts.dart';
+// import 'package:ocr_app/welcome.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -11,8 +13,9 @@ import 'package:pimp_my_button/pimp_my_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'widgets/side_nav.dart';
-import 'package:camera/camera.dart';
+// import 'package:camera/camera.dart';
 import 'dart:async';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'dart:io';
 import 'package:image_stack/image_stack.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -20,11 +23,11 @@ import 'package:ocr_app/settings.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:path/path.dart' as Path;
 
-List<CameraDescription> cameras;
+// List<CameraDescription> cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
+  // cameras = await availableCameras();
   runApp(MyApp());
 }
 
@@ -35,42 +38,42 @@ class MyApp extends StatelessWidget {
 //      debugShowCheckedModeBanner: false,
 
       title: 'Smart Eyes',
-      home: MyHomePage(),
+      home: Splash(),
       theme: ThemeData(primaryColor: HexColor('#182035')),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class TestToSpeech extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  CameraController controller;
+class _MyHomePageState extends State<TestToSpeech> {
+  // CameraController controller;
 
   @override
-  void initState() {
-    super.initState();
-    controller = CameraController(cameras[0], ResolutionPreset.medium);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  // controller = CameraController(cameras[0], ResolutionPreset.medium);
+  // controller.initialize().then((_) {
+  //   if (!mounted) {
+  //     return;
+  //   }
+  //   setState(() {});
+  // });
+  // }
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller?.dispose();
+  //   super.dispose();
+  // }
 
   int x = 0;
   String trans;
   String audioFileName;
-  String temp = '';
+  String temp;
   GoogleTranslator translator = GoogleTranslator();
   final FlutterTts flutterTts = FlutterTts();
 
@@ -92,13 +95,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future readText() async {
+  Future readText(bool speak) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool transNeeded = prefs.getBool('transNeeded') ?? false;
     double speechRate = (prefs.getDouble('speed') ?? 80) / 100;
     String vAccent;
     String dLang;
     String trLang;
+    temp = '';
     switch (prefs.getString('voiceAccent')) {
       case 'Indian':
         vAccent = 'hi-in-x-hia-local';
@@ -192,19 +196,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //     await flutterTts.setVoice(vAccent);
     await flutterTts.setSpeechRate(speechRate);
-    await flutterTts.speak(temp);
+    if (speak) {
+      await flutterTts.speak(temp);
+    }
+
 //    await flutterTts.synthesizeToFile(temp, '1staudio.mp4');
 
     print(temp);
   }
 
   SaveFile() async {
+    if (temp == null || temp == '') {
+      print('\n\ntemp is nullll!!!\n\n');
+      readText(false);
+    }
+    print(temp);
+
     await flutterTts.synthesizeToFile(temp, audioFileName + '.mp4');
 
-    File file = File(
-        '/storage/emulated/0/Android/data/com.webdevwithus.flutter_app/files/' +
-                audioFileName ??
-            '1staudio' + '.mp4');
+    // File file = File(
+    //     '/storage/emulated/0/Android/data/com.webdevwithus.flutter_app/files/' +
+    //             audioFileName ??
+    //         '1staudio' + '.mp4');
   }
 
   Translate(temp, String tLang) async {
@@ -284,20 +297,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
-    List<String> images = [
-      "https://images.unsplash.com/photo-1458071103673-6a6e4c4a3413?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-      "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-      "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-      "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-      "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-      "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80",
-      "https://images.unsplash.com/photo-1470406852800-b97e5d92e2aa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-      "https://images.unsplash.com/photo-1473700216830-7e08d47f858e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"
-    ];
 
     print("build is called $x");
     return Scaffold(
@@ -336,7 +335,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       quarterTurns: x,
                       child: Container(
                         width: (size / 1.15) - 40,
-                        height: (size / controller.value.aspectRatio) - 100,
+                        height: (size / 1) - 100,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
@@ -344,17 +343,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 fit: BoxFit.fill)),
                       ),
                     ))
-                  : ClipRect(
-                      // child: FittedBox(
-                      //     fit: BoxFit.fitWidth,
-                      //     child: Container(
-                      //         width: size / 1.15,
-                      //         height: (size / controller.value.aspectRatio),
-                      //         child: AspectRatio(
-                      //           aspectRatio: controller.value.aspectRatio,
-                      //           child: CameraPreview(controller),
-                      //         ))),
-                      ),
+                  : ClipRect(),
               SizedBox(
                 height: 10,
               ),
@@ -384,12 +373,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   print('heyyyyyyy');
                   pickImage(false);
-                  // setState(() {
-                  //   print('hey');
-                  //   isImageLoaded = true;
-                  //   pickedImage=File('/data/user/0/com.webdevwithus.ocr_app/cache/image_picker5960057178698883867.jpg');
-                  // },
-                  // );
                 },
                 onLongPress: () {
                   pickImage(true);
@@ -408,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             return RaisedButton(
                               onPressed: () {
                                 controller.forward(from: 0.0);
-                                readText();
+                                readText(true);
                               },
                               elevation: 6,
                               color: HexColor('#161D2F'),
@@ -449,68 +432,68 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
                     )
                   : Container(),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.end,
-              //   children: [
-              //     ImageStack(
-              //       imageList: images,
-              //       imageRadius: 50, // Radius of each images
-              //       imageCount:
-              //           8, // Maximum number of images to be shown in stack
-              //       imageBorderWidth: 3,
-              //       totalCount: 12, // Border width around the images
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
       ),
-//      floatingActionButton: FabCircularMenu(
-//          fabCloseColor: Colors.white,
-//          fabColor: HexColor('#112250') ,
-//          fabOpenColor: Colors.white,
-//          ringColor: HexColor('#2F3C60'),
-//
-//
-//          fabOpenIcon: Icon(Icons.dashboard, color:HexColor('#112250') ),
-//          children: <Widget>[
-//            IconButton(icon: Icon(Icons.record_voice_over, color: Colors.white, size: 35,), onPressed: () {
-//              Navigator.push(context, MaterialPageRoute(builder: (context) => settings()));
-//              print('Home');
-//            }),
-////            IconButton(icon: Icon(Icons.airplanemode_active, color: Colors.white, size: 35,), onPressed: () {
-////              Navigator.push(context, MaterialPageRoute(builder: (context) => My2Page()));
-////              print('Home');
-////            }),
-//            IconButton(icon: Icon(Icons.colorize, color: Colors.white, size: 35,), onPressed: () {
-//              Navigator.push(context, MaterialPageRoute(builder: (context) => My3Page()));
-//              print('Home');
-//            }),
-//
-//            IconButton(icon: Icon(Icons.person, color: Colors.white, size: 35,), onPressed: () {
-//              Navigator.push(context, MaterialPageRoute(builder: (context) => My4app()));
-//              print('Home');
-//            }),
-//
-//
-//          ]
-//      ),
     );
   }
 }
 
-class _SystemPadding extends StatelessWidget {
-  final Widget child;
+class Splash extends StatefulWidget {
+  Splash({
+    Key key,
+  }) : super(key: key);
 
-  _SystemPadding({Key key, this.child}) : super(key: key);
+  @override
+  _MyHomePageState1 createState() => _MyHomePageState1();
+}
+
+class _MyHomePageState1 extends State<Splash> {
+  @override
+  initState() {
+    super.initState();
+    new Timer(const Duration(seconds: 15), onClose);
+  }
 
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    return new AnimatedContainer(
-        padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 300),
-        child: child);
+    return Scaffold(
+      backgroundColor: HexColor('#182035'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+//            child:
+            child: TypewriterAnimatedTextKit(
+              speed: Duration(milliseconds: 300),
+              onTap: () {
+                print("Tap Event");
+              },
+              text: [
+                "Smart Cane",
+                "A Vision for Vision",
+              ],
+              textStyle: TextStyle(fontSize: 30.0, fontFamily: "Agne"),
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void onClose() {
+    Navigator.of(context).pushReplacement(new PageRouteBuilder(
+        maintainState: true,
+        opaque: true,
+        pageBuilder: (context, _, __) => new TestToSpeech(),
+        transitionDuration: const Duration(seconds: 2),
+        transitionsBuilder: (context, anim1, anim2, child) {
+          return new FadeTransition(
+            child: child,
+            opacity: anim1,
+          );
+        }));
   }
 }
