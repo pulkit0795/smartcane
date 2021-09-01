@@ -1,7 +1,7 @@
 # SmartCane
 
 A Vision for Vision.
-
+Mobile based application for visually impaired for speechifying surroundings and reading aloud hard text.
 <!-- ## Getting Started
 
 This project is a starting point for a Flutter application.
